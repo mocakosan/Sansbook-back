@@ -1,0 +1,37 @@
+{
+  "name": "sansbook-back",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "dev": "nodemon app",
+    "start": "cross-env NODE_ENV=production pm2 start app.js"
+  },
+  "author": "jangsan",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.710.0",
+    "bcrypt": "^5.1.0",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "helmet": "^6.1.5",
+    "hpp": "^0.2.3",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "multer-s3": "^2.9.0",
+    "mysql2": "^3.2.0",
+    "passport": "^0.6.0",
+    "passport-local": "^1.0.0",
+    "pm2": "^5.3.0",
+    "sequelize": "^6.30.0",
+    "sequelize-cli": "^6.6.0",
+    "session": "^0.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}

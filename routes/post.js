@@ -38,6 +38,7 @@ const upload = multer({
 });
 
 router.post("/", isLoggedIn, upload.none(), async (req, res, next) => {
+  // POST /post
   try {
     const hashtags = req.body.content.match(/#[^\s#]+/g);
     const post = await Post.create({
@@ -54,16 +55,16 @@ router.post("/", isLoggedIn, upload.none(), async (req, res, next) => {
       ); // [[노드, true], [리액트, true]]
       await post.addHashtags(result.map((v) => v[0]));
     }
-    if (req.body.Images) {
-      if (Array.isArray(req.body.Images)) {
-        // 이미지를 여러 개 올리면 image: [제로초.png, 부기초.png]
+    if (req.body.image) {
+      if (Array.isArray(req.body.image)) {
+        // 이미지를 여러 개 올리면 image: [san.png, san.png]
         const images = await Promise.all(
-          req.body.Images.map((image) => Image.create({ src: image }))
+          req.body.image.map((image) => Image.create({ src: image }))
         );
         await post.addImages(images);
       } else {
         // 이미지를 하나만 올리면 image: 제로초.png
-        const image = await Image.create({ src: req.body.Images });
+        const image = await Image.create({ src: req.body.image });
         await post.addImages(image);
       }
     }
@@ -98,6 +99,12 @@ router.post("/", isLoggedIn, upload.none(), async (req, res, next) => {
     console.error(error);
     next(error);
   }
+});
+
+router.post("/images", isLoggedIn, upload.array("image"), (req, res, next) => {
+  // POST /post/images
+  console.log(req.files);
+  res.json(req.files.map((v) => v.location.replace(/\/original\//, "/thumb/")));
 });
 
 router.post("/:postId/retweet", isLoggedIn, async (req, res, next) => {
@@ -253,12 +260,6 @@ router.delete("/:postId", isLoggedIn, async (req, res, next) => {
     console.error(error);
     next(error);
   }
-});
-
-router.post("/images", isLoggedIn, upload.array("image"), (req, res, next) => {
-  // POST /post/images
-  console.log(req.files);
-  res.json(req.files.map((v) => v.location));
 });
 
 router.get("/:postId", async (req, res, next) => {

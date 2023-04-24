@@ -42,7 +42,7 @@ router.post("/", isLoggedIn, upload.none(), async (req, res, next) => {
     const hashtags = req.body.content.match(/#[^\s#]+/g);
     const post = await Post.create({
       content: req.body.content,
-      userId: req.user.id,
+      UserId: req.User.id,
     });
     if (hashtags) {
       const result = await Promise.all(

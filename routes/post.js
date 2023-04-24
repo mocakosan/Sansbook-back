@@ -54,7 +54,7 @@ router.post("/", isLoggedIn, upload.none(), async (req, res, next) => {
       ); // [[노드, true], [리액트, true]]
       await post.addHashtags(result.map((v) => v[0]));
     }
-    if (req.body.image) {
+    if (req.body.Images) {
       if (Array.isArray(req.body.Images)) {
         // 이미지를 여러 개 올리면 image: [제로초.png, 부기초.png]
         const images = await Promise.all(
@@ -63,7 +63,7 @@ router.post("/", isLoggedIn, upload.none(), async (req, res, next) => {
         await post.addImages(images);
       } else {
         // 이미지를 하나만 올리면 image: 제로초.png
-        const image = await Images.create({ src: req.body.image });
+        const image = await image.create({ src: req.body.Images });
         await post.addImages(image);
       }
     }

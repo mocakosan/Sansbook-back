@@ -57,7 +57,7 @@ router.post("/", isLoggedIn, upload.none(), async (req, res, next) => {
     }
     if (req.body.image) {
       if (Array.isArray(req.body.image)) {
-        // 이미지를 여러 개 올리면 image: [san.png, san.png]
+        // 이미지를 여러 개 올리면 image: [제로초.png, 부기초.png]
         const images = await Promise.all(
           req.body.image.map((image) => Image.create({ src: image }))
         );
@@ -104,7 +104,7 @@ router.post("/", isLoggedIn, upload.none(), async (req, res, next) => {
 router.post("/images", isLoggedIn, upload.array("image"), (req, res, next) => {
   // POST /post/images
   console.log(req.files);
-  res.json(req.files.map((v) => v.location.replace(/\/original\//, "/thumb/")));
+  res.json(req.files.map((v) => v.location));
 });
 
 router.post("/:postId/retweet", isLoggedIn, async (req, res, next) => {

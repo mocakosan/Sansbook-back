@@ -59,7 +59,7 @@ router.post("/", isLoggedIn, upload.none(), async (req, res, next) => {
       if (Array.isArray(req.body.images)) {
         // 이미지를 여러 개 올리면 image: [제로초.png, 부기초.png]
         const images = await Promise.all(
-          req.body.images.map((image) => Images.create({ src: image }))
+          req.body.images.map((Images) => Images.create({ src: Images }))
         );
         await post.addImages(images);
       } else {

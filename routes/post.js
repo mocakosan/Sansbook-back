@@ -116,15 +116,15 @@ router.post("/:postId/retweet", isLoggedIn, async (req, res, next) => {
       return res.status(403).send("존재하지 않는 게시글입니다.");
     }
     if (
-      req.user.id === post.userId ||
-      (post.Retweet && post.Retweet.userId === req.user.id)
+      req.user.id === post.UserId ||
+      (post.Retweet && post.Retweet.UserId === req.user.id)
     ) {
       return res.status(403).send("자신의 글은 리트윗할 수 없습니다.");
     }
     const retweetTargetId = post.RetweetId || post.id;
     const exPost = await Post.findOne({
       where: {
-        userId: req.user.id,
+        UserId: req.user.id,
         RetweetId: retweetTargetId,
       },
     });
@@ -132,7 +132,7 @@ router.post("/:postId/retweet", isLoggedIn, async (req, res, next) => {
       return res.status(403).send("이미 리트윗했습니다.");
     }
     const retweet = await Post.create({
-      userId: req.user.id,
+      UserId: req.user.id,
       RetweetId: retweetTargetId,
       content: "retweet",
     });
@@ -193,7 +193,7 @@ router.post("/:postId/comment", isLoggedIn, async (req, res, next) => {
     const comment = await Comment.create({
       content: req.body.content,
       PostId: req.params.postId,
-      userId: req.user.id,
+      UserId: req.user.id,
     });
     const fullComment = await Comment.findOne({
       where: { id: comment.id },
@@ -220,7 +220,7 @@ router.patch("/:postId/like", isLoggedIn, async (req, res, next) => {
       return res.status(403).send("게시글이 존제하지 않습니다");
     }
     await post.addLikers(req.user.id);
-    res.json({ PostId: post.id, userId: req.user.id });
+    res.json({ PostId: post.id, UserId: req.user.id });
   } catch (error) {
     console.error(error);
     next(error);
@@ -235,7 +235,7 @@ router.delete("/:postId/like", isLoggedIn, async (req, res, next) => {
       return res.status(403).send("게시글이 존제하지 않습니다");
     }
     await post.removeLikers(req.user.id);
-    res.json({ PostId: post.id, userId: req.user.id });
+    res.json({ PostId: post.id, UserId: req.user.id });
   } catch (error) {
     console.error(error);
     next(error);
@@ -246,7 +246,7 @@ router.delete("/:postId", isLoggedIn, async (req, res, next) => {
   try {
     await Post.destroy({
       //자신의 게시물만 지울수 있도록
-      where: { id: req.params.postId, userId: req.user.id },
+      where: { id: req.params.postId, UserId: req.user.id },
     });
     res.status(200).json({ PostId: parseInt(req.params.postId, 10) });
   } catch (error) {

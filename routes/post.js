@@ -2,13 +2,12 @@ const express = require("express");
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
+const multerS3 = require("multer-s3");
+const AWS = require("aws-sdk");
 
 const { Post, Image, Comment, User, Hashtag } = require("../models");
 const { isLoggedIn } = require("./middlewares");
 const { test } = require("../config/config");
-
-const multerS3 = require("multer-s3");
-const AWS = require("aws-sdk");
 
 const router = express.Router();
 
@@ -103,7 +102,7 @@ router.post("/", isLoggedIn, upload.none(), async (req, res, next) => {
 router.post("/images", isLoggedIn, upload.array("image"), (req, res, next) => {
   // POST /post/images
   console.log(req.files);
-  res.json(req.files.map((v) => v.location));
+  res.json(req.files.map((v) => v.filename));
 });
 
 router.post("/:postId/retweet", isLoggedIn, async (req, res, next) => {

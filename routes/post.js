@@ -29,7 +29,12 @@ const upload = multer({
     s3: new AWS.S3(),
     bucket: "react-sansbook-aws",
     key(req, file, cb) {
-      cb(null, `original/${Date.now()}_${path.basename(file.originalname)}`);
+      cb(
+        null,
+        `original/${Date.now()}_${path.basename(
+          encodeURIComponent(file.originalname)
+        )}`
+      );
     },
   }),
   limits: { fileSize: 20 * 1024 * 1024 }, // 20MB
@@ -59,11 +64,11 @@ router.post("/", isLoggedIn, upload.none(), async (req, res, next) => {
         const images = await Promise.all(
           req.body.image.map((image) => Image.create({ src: image }))
         );
-        await post.addImages(encodeURIComponent(images));
+        await post.addImages(images);
       } else {
         // 이미지를 하나만 올리면 image: 제로초.png
         const image = await Image.create({ src: req.body.image });
-        await post.addImages(encodeURIComponent(image));
+        await post.addImages(image);
       }
     }
     const fullPost = await Post.findOne({

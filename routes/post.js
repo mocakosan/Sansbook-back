@@ -55,14 +55,18 @@ router.post("/", isLoggedIn, upload.none(), async (req, res, next) => {
     }
     if (req.body.image) {
       if (Array.isArray(req.body.image)) {
-        // 이미지를 여러 개 올리면 image: [제로초.png, 부기초.png]
+        // 이미지를 여러 개 올리면 image: [장산.png, 장산.png]
         const images = await Promise.all(
-          req.body.image.map((image) => Image.create({ src: image }))
+          req.body.image.map((image) =>
+            Image.create({ src: encodeURIComponent(image) })
+          )
         );
         await post.addImages(images);
       } else {
         // 이미지를 하나만 올리면 image: 제로초.png
-        const image = await Image.create({ src: req.body.image });
+        const image = await Image.create({
+          src: encodeURIComponent(req.body.image),
+        });
         await post.addImages(image);
       }
     }

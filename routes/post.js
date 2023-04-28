@@ -10,7 +10,7 @@ const { isLoggedIn } = require("./middlewares");
 const { test } = require("../config/config");
 
 const router = express.Router();
-
+//파일 업로드 폴더
 try {
   fs.accessSync("uploads");
 } catch (error) {

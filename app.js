@@ -26,7 +26,8 @@ db.sequelize
   .catch(console.error);
 passportConfig();
 //모드변경
-if (process.env.NODE_ENV === "production") { //배포용
+if (process.env.NODE_ENV === "production") {
+  //배포용
   app.use(morgan("combined"));
   app.use(hpp());
   app.use(helmet({ contentSecurityPolicy: false }));
@@ -36,11 +37,12 @@ if (process.env.NODE_ENV === "production") { //배포용
       credentials: true,
     })
   );
-} else { //개발용
+} else {
+  //개발용
   app.use(morgan("dev"));
   app.use(
     cors({
-      origin: true,
+      origin: "http://localhost:3000",
       credentials: true,
     })
   );
@@ -84,6 +86,6 @@ app.use("/post", postRouter);
 app.use("/user", userRouter);
 app.use("/hashtag", hashtagRouter);
 
-app.listen(80, () => {
+app.listen(3001, () => {
   console.log("서버실행중!");
 });

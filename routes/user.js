@@ -76,10 +76,10 @@ router.get("/followings", isLoggedIn, async (req, res, next) => {
   }
 });
 
-router.get("/:id", async (req, res, next) => {
+router.get("/:userId", async (req, res, next) => {
   try {
     const fullUserWithoutPassword = await User.findOne({
-      where: { id: req.params.id },
+      where: { id: req.params.userId },
       attributes: {
         exclude: ["password"],
       },
@@ -115,10 +115,10 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
-router.get("/:id/posts", async (req, res, next) => {
+router.get("/:userId/posts", async (req, res, next) => {
   // GET /user/1/posts
   try {
-    const user = await User.findOne({ where: { id: req.params.id } });
+    const user = await User.findOne({ where: { id: req.params.userId } });
     if (user) {
       const where = {};
       if (parseInt(req.query.lastId, 10)) {

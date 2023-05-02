@@ -110,11 +110,7 @@ router.post("/images", isLoggedIn, upload.array("image"), (req, res, next) => {
   // POST /post/images
   console.log(req.files);
 
-  res.json(
-    req.files
-      .map((v) => v.location.replace(/\/original\//, "/thumb/"))
-      .normalize("NFC")
-  );
+  res.json(req.files.map((v) => v.location.replace(/\/original\//, "/thumb/")));
 });
 
 router.post("/:postId/retweet", isLoggedIn, async (req, res, next) => {

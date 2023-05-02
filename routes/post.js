@@ -28,13 +28,14 @@ const upload = multer({
   storage: multerS3({
     s3: new AWS.S3(),
     bucket: "react-sansbook-aws",
-    key(req, file, cb) {
-      cb(
-        null,
-        `original/${Date.now()}_${encodeURIComponent(
-          path.basename(file.originalname)
-        )}`
-      );
+    key(res, req, file, cb) {
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" }),
+        cb(
+          null,
+          `original/${Date.now()}_${path.basename(
+            encodeURIComponent(file.originalname)
+          )}`
+        );
     },
   }),
   limits: { fileSize: 20 * 1024 * 1024 }, // 20MB

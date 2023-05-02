@@ -67,7 +67,9 @@ router.post("/", isLoggedIn, upload.none(), async (req, res, next) => {
         await post.addImages(images);
       } else {
         // 이미지를 하나만 올리면 image: 제로초.png
-        const image = await Image.create({ src: req.body.image });
+        const image = await Image.create({
+          src: encodeURIComponent(req.body.image),
+        });
         await post.addImages(image);
       }
     }

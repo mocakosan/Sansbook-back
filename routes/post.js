@@ -112,7 +112,7 @@ router.post("/images", isLoggedIn, upload.array("image"), (req, res, next) => {
 
   res.json(
     req.files.map((v) =>
-      v.location.encodeURIComponent(replace(/\/original\//, "/thumb/"))
+      encodeURI(v.location.replace(/\/original\//, "/thumb/"))
     )
   );
 });

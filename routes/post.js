@@ -31,8 +31,8 @@ const upload = multer({
     key(req, file, cb) {
       cb(
         null,
-        `original/${Date.now()}_${path.basename(
-          encodeURIComponent(encodeURIComponent(file.originalname))
+        `original/${Date.now()}_${path.encodeURIComponent(
+          basename(file.originalname)
         )}`
       );
     },

@@ -7,7 +7,7 @@ module.exports = class Image extends Model {
       {
         // id가 기본적으로 들어있다..
         src: {
-          type: DataTypes.STRING(200),
+          type: DataTypes.STRING(500),
           allowNull: false,
         },
       },

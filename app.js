@@ -87,6 +87,6 @@ app.use("/user", userRouter);
 app.use("/hashtag", hashtagRouter);
 
 // 배포용: 80 , 개발용: 3001
-app.listen(80, () => {
+app.listen(3001, () => {
   console.log("서버실행중!");
 });

@@ -32,7 +32,7 @@ const upload = multer({
       cb(
         null,
         `original/${Date.now()}_${path.basename(
-          encodeURIComponent(file.originalname).normalize("NFC")
+          encodeURIComponent(file.originalname)
         )}`
       );
     },

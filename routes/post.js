@@ -28,14 +28,13 @@ const upload = multer({
   storage: multerS3({
     s3: new AWS.S3(),
     bucket: "react-sansbook-aws",
-    key(res, req, file, cb) {
-      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" }),
-        cb(
-          null,
-          `original/${Date.now()}_${path.basename(
-            encodeURIComponent(file.originalname)
-          )}`
-        );
+    key(req, file, cb) {
+      cb(
+        null,
+        `original/${Date.now()}_${path.basename(
+          encodeURIComponent(file.originalname)
+        )}`
+      );
     },
   }),
   limits: { fileSize: 20 * 1024 * 1024 }, // 20MB
@@ -108,6 +107,7 @@ router.post("/", isLoggedIn, upload.none(), async (req, res, next) => {
 router.post("/images", isLoggedIn, upload.array("image"), (req, res, next) => {
   // POST /post/images
   console.log(req.files);
+  res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
   res.json(req.files.map((v) => v.location.replace(/\/original\//, "/thumb/")));
 });
 

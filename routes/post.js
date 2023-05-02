@@ -32,7 +32,7 @@ const upload = multer({
       cb(
         null,
         `original/${Date.now()}_${path.basename(
-          encodeURIComponent(file.originalname)
+          encodeURIComponent(file.originalname).normalize("NFC")
         )}`
       );
     },
@@ -110,7 +110,11 @@ router.post("/images", isLoggedIn, upload.array("image"), (req, res, next) => {
   // POST /post/images
   console.log(req.files);
 
-  res.json(req.files.map((v) => v.location.replace(/\/original\//, "/thumb/")));
+  res.json(
+    req.files
+      .map((v) => v.location.replace(/\/original\//, "/thumb/"))
+      .normalize("NFC")
+  );
 });
 
 router.post("/:postId/retweet", isLoggedIn, async (req, res, next) => {

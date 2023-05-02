@@ -9,10 +9,6 @@ const { Post, Image, Comment, User, Hashtag } = require("../models");
 const { isLoggedIn } = require("./middlewares");
 const { test } = require("../config/config");
 
-function apiTest(req, res) {
-  res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
-  res.end("성공");
-}
 const router = express.Router();
 //파일 업로드 폴더(이미지)
 try {
@@ -112,7 +108,12 @@ router.post("/images", isLoggedIn, upload.array("image"), (req, res, next) => {
   // POST /post/images
   console.log(req.files);
 
-  res.json(req.files.map((v) => v.location.replace(/\/original\//, "/thumb/")));
+  res.json(
+    req.files.map((v) => {
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" }),
+        v.location.replace(/\/original\//, "/thumb/");
+    })
+  );
 });
 
 router.post("/:postId/retweet", isLoggedIn, async (req, res, next) => {

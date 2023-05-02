@@ -17,9 +17,7 @@ const db = require("./models");
 const passportConfig = require("./passport");
 
 dotenv.config();
-const app = express((req, res) => {
-  res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
-});
+const app = express();
 db.sequelize
   .sync()
   .then(() => {

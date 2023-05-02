@@ -68,7 +68,7 @@ router.post("/", isLoggedIn, upload.none(), async (req, res, next) => {
       } else {
         // 이미지를 하나만 올리면 image: 제로초.png
         const image = await Image.create({
-          src: encodeURIComponent(req.body.image),
+          src: req.body.image,
         });
         await post.addImages(image);
       }
@@ -110,7 +110,11 @@ router.post("/images", isLoggedIn, upload.array("image"), (req, res, next) => {
   // POST /post/images
   console.log(req.files);
 
-  res.json(req.files.map((v) => v.location.replace(/\/original\//, "/thumb/")));
+  res.json(
+    req.files.map((v) =>
+      v.location.encodeURIComponent(replace(/\/original\//, "/thumb/"))
+    )
+  );
 });
 
 router.post("/:postId/retweet", isLoggedIn, async (req, res, next) => {

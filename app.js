@@ -33,7 +33,7 @@ if (process.env.NODE_ENV === "production") {
   app.use(helmet({ contentSecurityPolicy: false }));
   app.use(
     cors({
-      origin: "http://sansbook.co.kr",
+      origin: "https://sansbook.co.kr",
       credentials: true,
     })
   );
@@ -68,9 +68,10 @@ app.use(
     saveUninitialized: false,
     resave: false,
     secret: process.env.COOKIE_SECRET,
+    proxy: process.env.NODE_ENV === "production",
     cookie: {
       httpOnly: true,
-      secure: false,
+      secure: process.env.NODE_ENV === "production",
       domain: process.env.NODE_ENV === "production" && ".sansbook.co.kr",
     },
   })
